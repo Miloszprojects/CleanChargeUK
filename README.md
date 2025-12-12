@@ -93,6 +93,9 @@ The application fully meets its original assumptions and works smoothly end-to-e
 Enjoy charging when the grid is greenest 💚⚡  
 **CleanCharge UK**
 
+Check under
+http://34.116.235.212
+
 ---
 
 ## 👤 Maintainer
