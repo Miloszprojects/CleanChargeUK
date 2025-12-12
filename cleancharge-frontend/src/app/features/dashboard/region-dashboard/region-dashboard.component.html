@@ -1,0 +1,120 @@
+<div class="dashboard-layout">
+  <div class="dashboard-left">
+    <app-uk-region-map
+      [regions]="regions"
+      [selectedRegionId]="selectedRegionId"
+      (regionSelected)="onRegionSelected($event)"
+      (regionHovered)="onRegionHovered($event)">
+    </app-uk-region-map>
+  </div>
+
+  <div class="dashboard-right">
+
+    <div class="chart-card">
+      <div class="chart-card__header">
+        <h3>{{ selectedRegionName || 'Click region on the map' }}</h3>
+        <p *ngIf="selectedRegionName">Energy mix: today / tomorrow / the day after tomorrow</p>
+      </div>
+
+      <div class="chart-card__body chart-card__body--pie">
+        <ng-container *ngIf="pieCharts?.length && pieCharts[0]?.data?.datasets?.length; else noRegionPie">
+          <div class="pie-row">
+            <div class="pie-card" *ngFor="let pie of pieCharts">
+
+              <div class="pie-card__title">
+                {{ pie.title }}
+                <span *ngIf="pie.date">({{ formatShortDate(pie.date) }})</span>
+              </div>
+
+              <div class="pie-card__clean" *ngIf="pie.cleanPercentage !== undefined">
+                {{ pie.cleanPercentage | number:'1.0-1' }}% clean
+              </div>
+
+              <div class="pie-wrapper">
+                <canvas
+                  baseChart
+                  [data]="pie.data"
+                  [options]="pieChartOptions"
+                  [type]="'pie'">
+                </canvas>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="pie-legend" *ngIf="pieLegendLabels?.length">
+            <span class="pie-legend__item" *ngFor="let label of pieLegendLabels">
+              {{ label }}
+            </span>
+          </div>
+        </ng-container>
+
+        <ng-template #noRegionPie>
+          <p class="placeholder">Click region on the map.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="chart-card">
+
+      <div class="chart-card__header chart-card__header--bar">
+        <div class="chart-card__header-left">
+          <h3>Cleanest loading windows (48h)</h3>
+          <p *ngIf="selectedRegionName">
+            Average share of "clean" (biomass, nuclear, hydro, wind, solar)
+          </p>
+        </div>
+        <div class="window-details window-details--inline" *ngIf="selectedWindow">
+          <p class="window-details__title">
+            Window for <strong>{{ selectedHours }} h</strong>
+          </p>
+          <p class="window-details__small">
+            From: <strong>{{ formatDateTime(selectedWindow.start) }}</strong><br />
+            To: <strong>{{ formatDateTime(selectedWindow.end) }}</strong>
+          </p>
+          <p class="window-details__small">
+            Clean:
+            <strong>{{ selectedWindow.averageCleanEnergyPercentage | number:'1.0-1' }}%</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- slider godzin (pod nagłówkiem) -->
+      <div class="hours-picker" *ngIf="chargingWindows?.length">
+        <label for="hoursRange">Select charging time (1–6 h):</label>
+        <div class="hours-picker__controls">
+          <input
+            id="hoursRange"
+            type="range"
+            min="1"
+            max="6"
+            [value]="selectedHours"
+            (input)="onHoursChange($event)"
+          />
+          <span class="hours-picker__value">{{ selectedHours }} h</span>
+        </div>
+      </div>
+
+      <div class="chart-card__body chart-card__body--bar">
+        <ng-container *ngIf="barChartData?.datasets?.length; else noRegionBar">
+          <div class="bar-area">
+            <canvas
+              baseChart
+              [data]="barChartData"
+              [options]="barChartOptions"
+              [type]="'bar'">
+            </canvas>
+          </div>
+        </ng-container>
+
+        <ng-template #noRegionBar>
+          <p class="placeholder">Click a region to see recommended 1-6 hour windows.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="error">
+      {{ error }}
+    </div>
+  </div>
+</div>

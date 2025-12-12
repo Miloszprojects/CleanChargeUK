@@ -1,0 +1,127 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.uk-map-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+}
+
+.uk-map-card__header h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e5f9ff;
+  margin: 0;
+}
+
+.uk-map-card__header p {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+/* Główne pudełko z mapą */
+.uk-map-wrapper {
+  position: relative;
+  border-radius: 1.25rem;
+  padding: 1.75rem 1.9rem;
+  background: radial-gradient(circle at 10% 0%, #0f172a, #020617 70%);
+  box-shadow: inset 0 0 40px rgba(15, 118, 110, 0.25);
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uk-map {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+
+@media (max-width: 1200px) {
+  .uk-map-wrapper {
+    min-height: 380px;
+    padding: 1.5rem 1.6rem;
+  }
+
+  .uk-map {
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 900px) {
+  .uk-map-wrapper {
+    min-height: 340px;
+  }
+
+  .uk-map {
+    max-width: 420px;
+  }
+}
+
+.uk-outline {
+  fill: rgba(34, 197, 94, 0.04);
+  stroke: #22c55e;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.uk-outline--ireland {
+  stroke-width: 1.2;
+  opacity: 0.7;
+}
+
+.region {
+  fill: transparent;
+  stroke: #14f4a8;
+  stroke-width: 1.1;
+  stroke-dasharray: 4 4;
+  cursor: pointer;
+  transition:
+    fill 0.18s ease-out,
+    stroke 0.18s ease-out,
+    stroke-width 0.18s ease-out,
+    transform 0.18s ease-out,
+    opacity 0.18s ease-out;
+}
+
+.region--circle {
+  stroke-dasharray: 3 3;
+}
+
+.region--macro {
+  stroke-dasharray: 6 4;
+  opacity: 0.6;
+}
+
+.region--hovered {
+  fill: rgba(34, 197, 94, 0.18);
+  stroke-width: 1.6;
+  transform: translateY(-1px);
+}
+
+.region--selected {
+  fill: rgba(34, 197, 94, 0.35);
+  stroke: #4ade80;
+  stroke-dasharray: 0;
+  stroke-width: 1.8;
+  opacity: 1;
+}
+
+.uk-map__tooltip {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  color: #e5f9ff;
+  white-space: nowrap;
+}
